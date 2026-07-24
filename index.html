@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ 10分鐘極速透視地底：折射震測探勘互動網頁</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- MathJax for LaTeX Equations -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #0284c7 0%, #4f46e5 50%, #9333ea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-glow {
+            box-shadow: 0 10px 30px -10px rgba(79, 70, 229, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-indigo-500 selection:text-white">
+
+    <!-- 頂部導覽列 -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-md shadow-indigo-200">
+                        ⚡
+                    </div>
+                    <div>
+                        <span class="font-black text-slate-900 text-lg tracking-tight block leading-none">FlashGeo 地底透視鏡</span>
+                        <span class="text-[11px] text-slate-500 font-semibold">折射震測探勘 (Refraction Seismology) 極速網頁</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-6 text-sm font-bold text-slate-600">
+                    <a href="#concept" class="hover:text-indigo-600 transition">物理原理</a>
+                    <a href="#race-analogy" class="hover:text-indigo-600 transition">賽跑比喻</a>
+                    <a href="#travel-time" class="hover:text-indigo-600 transition">走時曲線</a>
+                    <a href="#simulator" class="hover:text-indigo-600 transition">動態模擬</a>
+                    <a href="#calculator" class="hover:text-indigo-600 transition">深度計算機</a>
+                    <a href="#quiz" class="hover:text-indigo-600 transition">隨堂測驗</a>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs font-bold px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded-full border border-indigo-100 flex items-center gap-1">
+                        <i class="fa-solid me-1 fa-clock"></i> 學習耗時：8 分鐘
+                    </span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容區 -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
+
+        <!-- Hero 主視覺 Banner -->
+        <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white p-8 md:p-12 shadow-2xl border border-slate-800">
+            <div class="relative z-10 max-w-3xl space-y-6">
+                <div class="inline-flex items-center space-x-2 bg-indigo-500/20 border border-indigo-400/30 px-3.5 py-1.5 rounded-full text-indigo-300 text-xs font-bold tracking-wide uppercase backdrop-blur-sm">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> 物理現象 ✕ 地球科學
+                </div>
+                <h1 class="text-3xl sm:text-5xl font-black leading-tight tracking-tight">
+                    不用開挖地表！<br>
+                    用<span class="text-amber-400">「光折射的原理」</span>透視地下構造
+                </h1>
+                <p class="text-slate-300 text-base md:text-lg leading-relaxed font-normal">
+                    你想過如何在不拔草、不挖土的前提下，精準知道腳下 3 公尺埋著硬岩層還是飽和含水層嗎？只要拿大鐵鎚砸一下鐵板，利用光的「折射定律」與「走時曲線」，就能像為大地做超音波掃描一樣透視地下！
+                </p>
+                <div class="pt-2 flex flex-wrap gap-4">
+                    <a href="#simulator" class="px-6 py-3 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold rounded-xl shadow-lg shadow-amber-400/20 transition transform active:scale-95 flex items-center gap-2">
+                        <i class="fa-solid fa-play"></i> 開啟動態模擬器
+                    </a>
+                    <a href="#calculator" class="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl border border-white/20 backdrop-blur-sm transition active:scale-95 flex items-center gap-2">
+                        <i class="fa-solid fa-calculator"></i> 體驗深度計算機
+                    </a>
+                </div>
+            </div>
+            <!-- 背景裝飾圖騰 -->
+            <div class="absolute -right-16 -bottom-16 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute right-12 top-12 opacity-10 text-9xl font-black text-white pointer-events-none">
+                $\sin 	heta$
+            </div>
+        </section>
+
+        <!-- 第一區塊：核心物理原理 -->
+        <section id="concept" class="space-y-8">
+            <div class="border-l-4 border-indigo-600 pl-4 space-y-1">
+                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">1. 光學折射 ✕ 地震波探針</h2>
+                <p class="text-slate-500 text-sm font-medium">當地震波穿過不同質地的地層，行為與光斜射入水面一模一樣！</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- 卡片 1 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 card-glow space-y-3 relative overflow-hidden">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center text-2xl font-black">
+                        🔨
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900">人工震源 (Source)</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        重鎚敲擊鐵板或引爆炸藥釋放能量，能量轉化為地震波向地底傳播。地表布設一排**地震儀陣列 (Geophones)** 記錄抵達時刻。
+                    </p>
+                </div>
+
+                <!-- 卡片 2 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 card-glow space-y-3 relative overflow-hidden">
+                    <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center text-2xl font-black">
+                        📐
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900">斯乃爾定律 (Snell's Law)</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        當下層地層質地更堅硬、波速更快（\(V_2 > V_1\)）時，震波入射交界面會發生折射，折射角大於入射角：
+                    </p>
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-center text-sm font-bold text-indigo-900">
+                        $$rac{\sin 	heta_1}{\sin 	heta_2} = rac{V_1}{V_2}$$
+                    </div>
+                </div>
+
+                <!-- 卡片 3 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 card-glow space-y-3 relative overflow-hidden">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-2xl font-black">
+                        ⚡
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900">臨界折射波 (Head Wave)</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        當折射角達 \(90^\circ\) 時，入射角稱為**臨界角 (\(	heta_c\))**。波不再穿透，而是貼著交界面以 \(V_2\) 高速滑行，並持續向地表輻射訊號！
+                    </p>
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-center text-sm font-bold text-emerald-900">
+                        $$\sin 	heta_c = rac{V_1}{V_2}$$
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第二區塊：賽跑比喻 -->
+        <section id="race-analogy" class="bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 border border-amber-200 p-8 rounded-3xl space-y-6">
+            <div class="flex items-center space-x-3">
+                <span class="text-3xl">🏎️</span>
+                <div>
+                    <h2 class="text-2xl font-extrabold text-slate-900">2. 趣味賽跑：一般道路 vs. 高速公路</h2>
+                    <p class="text-slate-600 text-xs sm:text-sm font-medium">為什麼繞遠路的折射波會「後來居上」超車？</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 text-sm">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-amber-100 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="font-black text-rose-600 text-base">🔴 選手 A：直達波 (Direct Wave)</span>
+                        <span class="text-xs bg-rose-100 text-rose-700 font-bold px-2.5 py-0.5 rounded">走省道近路</span>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed">
+                        從起點直奔終點，全程走地表淺層（速度慢 \(V_1\)）。在**短距離**比賽中勝出；但因為速度慢，距離越遠耗時越長。
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-amber-100 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="font-black text-emerald-600 text-base">🟢 選手 B：臨界折射波 (Head Wave)</span>
+                        <span class="text-xs bg-emerald-100 text-emerald-700 font-bold px-2.5 py-0.5 rounded">切換高速公路</span>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed">
+                        先斜向向下走（省道），切換到深層硬岩交界面（高速公路，速度極快 \(V_2\) 飆車），最後折返回地表。當目的地夠遠時，**後來居上**成功超車！
+                    </p>
+                </div>
+            </div>
+
+            <div class="bg-white/80 backdrop-blur p-4 rounded-xl border border-amber-200 text-center font-bold text-slate-800 text-sm">
+                🏁 兩位選手同時到達終點的關鍵距離，就叫作 <span class="text-indigo-600 text-base underline decoration-amber-400 decoration-2">超越距離 (Crossover Distance, \(X_c\))</span>！
+            </div>
+        </section>
+
+        <!-- 第三區塊：走時曲線圖說明 -->
+        <section id="travel-time" class="space-y-6">
+            <div class="border-l-4 border-indigo-600 pl-4 space-y-1">
+                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">3. 破解地底密碼：走時曲線圖 (Travel-Time Curve)</h2>
+                <p class="text-slate-500 text-sm font-medium">橫軸是距離 \(x\)，縱軸是走時 \(T\)。這張圖的斜率藏著地層的所有速度與深度！</p>
+            </div>
+
+            <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+                            <h4 class="font-bold text-indigo-900 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-chart-line text-indigo-600"></i> 直達波走時公式
+                            </h4>
+                            <p class="text-xs text-slate-600">過原點的直線，斜率即為第一層波速的倒數：</p>
+                            <div class="text-sm font-bold text-indigo-700 font-mono">
+                                $$T_1 = rac{x}{V_1} \quad (	ext{斜率 } = 1/V_1)$$
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+                            <h4 class="font-bold text-emerald-900 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-chart-line text-emerald-600"></i> 折射波走時公式
+                            </h4>
+                            <p class="text-xs text-slate-600">斜率較平緩（高速公路速限高），不通過原點：</p>
+                            <div class="text-sm font-bold text-emerald-700 font-mono">
+                                $$T_2 = rac{x}{V_2} + rac{2h\sqrt{V_2^2 - V_1^2}}{V_1 V_2} \quad (	ext{斜率 } = 1/V_2)$$
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-amber-50 rounded-xl border border-amber-200 space-y-2">
+                            <h4 class="font-bold text-amber-900 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-key text-amber-600"></i> 最終求地層厚度 \(h\) 公式
+                            </h4>
+                            <p class="text-xs text-slate-600">利用走時曲線的交點（超越距離 \(X_c\)），搭配 \(V_1, V_2\) 代入求出深度：</p>
+                            <div class="text-sm font-bold text-amber-800 font-mono text-center">
+                                $$h = rac{X_c \sqrt{V_2 - V_1}}{2 \sqrt{V_2 + V_1}}$$
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 走時曲線圖靜態示意圖 (SVG繪製) -->
+                    <div class="bg-slate-900 p-6 rounded-2xl text-white space-y-3 flex flex-col items-center justify-center">
+                        <span class="text-xs font-mono text-slate-400">📊 走時曲線圖示意 (Travel-Time Curve)</span>
+                        <svg viewBox="0 0 400 280" class="w-full max-w-md h-auto">
+                            <!-- 座標軸 -->
+                            <line x1="50" y1="230" x2="370" y2="230" stroke="#94a3b8" stroke-width="2"/>
+                            <line x1="50" y1="230" x2="50" y2="30" stroke="#94a3b8" stroke-width="2"/>
+                            <text x="370" y="255" fill="#94a3b8" font-size="12" text-anchor="end">距離 x (m)</text>
+                            <text x="40" y="25" fill="#94a3b8" font-size="12" text-anchor="end">走時 T (s)</text>
+
+                            <!-- 直達波 (紅色) -->
+                            <line x1="50" y1="230" x2="340" y2="50" stroke="#f43f5e" stroke-width="3"/>
+                            <text x="280" y="70" fill="#f43f5e" font-size="11" font-weight="bold">直達波 (斜率=1/V₁)</text>
+
+                            <!-- 折射波 (綠色) -->
+                            <line x1="120" y1="180" x2="360" y2="105" stroke="#10b981" stroke-width="3"/>
+                            <text x="250" y="100" fill="#10b981" font-size="11" font-weight="bold">折射波 (斜率=1/V₂)</text>
+
+                            <!-- 交點 (超越距離 Xc) -->
+                            <circle cx="218" cy="126" r="6" fill="#fbbf24"/>
+                            <line x1="218" y1="126" x2="218" y2="230" stroke="#fbbf24" stroke-dasharray="4"/>
+                            <text x="218" y="250" fill="#fbbf24" font-size="12" font-weight="bold" text-anchor="middle">超越距離 Xc</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第四區塊：互動式動態模擬器 -->
+        <section id="simulator" class="bg-slate-900 text-white p-6 md:p-8 rounded-3xl space-y-6 shadow-2xl border border-slate-800">
+            <div class="flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
+                <div class="flex items-center space-x-3">
+                    <span class="text-3xl">🎮</span>
+                    <div>
+                        <h2 class="text-2xl font-extrabold text-amber-400">4. 互動實驗室：地震波走時動態模擬</h2>
+                        <p class="text-xs text-slate-400">拖動下方滑桿調整參數，即時觀察地震波與走時曲線變化！</p>
+                    </div>
+                </div>
+                <button onclick="runSimulationAnimation()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm rounded-xl shadow transition active:scale-95 flex items-center gap-2">
+                    <i class="fa-solid fa-play"></i> 播放地震波擴散動畫
+                </button>
+            </div>
+
+            <!-- 控制滑桿區 -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 bg-slate-800/60 p-5 rounded-2xl border border-slate-700/50">
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs font-bold">
+                        <label class="text-slate-300">表層波速 \(V_1\)</label>
+                        <span id="v1Val" class="text-amber-400 font-mono">400 m/s</span>
+                    </div>
+                    <input type="range" id="v1Slider" min="200" max="800" step="20" value="400" class="w-full accent-amber-400 cursor-pointer">
+                    <p class="text-[10px] text-slate-400">鬆散表土 / 回填土</p>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs font-bold">
+                        <label class="text-slate-300">深層波速 \(V_2\)</label>
+                        <span id="v2Val" class="text-emerald-400 font-mono">1000 m/s</span>
+                    </div>
+                    <input type="range" id="v2Slider" min="600" max="2000" step="50" value="1000" class="w-full accent-emerald-400 cursor-pointer">
+                    <p class="text-[10px] text-slate-400">飽和含水層 / 風化岩盤</p>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs font-bold">
+                        <label class="text-slate-300">地層厚度 \(h\)</label>
+                        <span id="hVal" class="text-indigo-400 font-mono">3.5 m</span>
+                    </div>
+                    <input type="range" id="hSlider" min="1.0" max="8.0" step="0.5" value="3.5" class="w-full accent-indigo-400 cursor-pointer">
+                    <p class="text-[10px] text-slate-400">表層土壤深度</p>
+                </div>
+            </div>
+
+            <!-- 動態繪圖區 (Canvas) -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Canvas 1: 走時曲線即時圖 -->
+                <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
+                    <span class="text-xs font-mono text-slate-400 flex items-center justify-between">
+                        <span>📈 即時走時曲線圖 (Travel-Time Curve)</span>
+                        <span id="simXc" class="text-amber-400 font-bold">Xc = -- m</span>
+                    </span>
+                    <canvas id="travelTimeCanvas" width="450" height="250" class="w-full h-auto bg-slate-900 rounded-lg"></canvas>
+                </div>
+
+                <!-- Canvas 2: 地層與波前傳播模擬 -->
+                <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
+                    <span class="text-xs font-mono text-slate-400 flex items-center justify-between">
+                        <span>🌏 地下構造與震波路徑剖面</span>
+                        <span id="simCriticalAngle" class="text-indigo-300 font-bold">臨界角 θc = --°</span>
+                    </span>
+                    <canvas id="waveCanvas" width="450" height="250" class="w-full h-auto bg-slate-900 rounded-lg"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第五區塊：實戰計算機 -->
+        <section id="calculator" class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 card-glow space-y-6">
+            <div class="border-l-4 border-amber-500 pl-4 space-y-1">
+                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">5. 實戰速算：地層深度 (\(h\)) 計算機</h2>
+                <p class="text-slate-500 text-sm font-medium">只要野外測出 \(V_1, V_2\) 與超越距離 \(X_c\)，自動精確算出地下深度！</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-700 block">表層波速 \(V_1\) (m/s)</label>
+                    <input type="number" id="calcV1" value="400" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 font-bold focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-700 block">深層波速 \(V_2\) (m/s)</label>
+                    <input type="number" id="calcV2" value="1000" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 font-bold focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-700 block">超越距離 \(X_c\) (m)</label>
+                    <input type="number" id="calcXc" value="18" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 font-bold focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-4 items-center justify-between bg-indigo-50 p-6 rounded-2xl border border-indigo-100">
+                <button onclick="loadUTaipeiData()" class="px-4 py-2 bg-white hover:bg-slate-100 text-indigo-700 font-bold text-xs rounded-lg border border-indigo-200 transition">
+                    📍 帶入臺北市立大學實測數據
+                </button>
+
+                <div class="text-right">
+                    <span class="text-xs text-indigo-600 font-bold uppercase tracking-wider block">計算結果 地層厚度 h：</span>
+                    <span id="calcResult" class="text-3xl font-black text-indigo-900 font-mono">3.86 公尺</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第六區塊：校園實測案例 -->
+        <section class="bg-slate-900 text-white p-6 md:p-8 rounded-3xl space-y-6">
+            <div class="flex items-center space-x-3">
+                <span class="text-3xl">🏛️</span>
+                <div>
+                    <h2 class="text-2xl font-extrabold text-white">6. 國立臺北市立大學野外實測案例</h2>
+                    <p class="text-xs text-slate-400">圖書館後方林地：用一把鐵鎚與 24 支地震儀解析腳下 3 公尺秘密</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 text-sm">
+                <div class="bg-slate-800/80 p-5 rounded-2xl border border-slate-700 space-y-3">
+                    <h3 class="font-bold text-amber-400 text-base">🛠️ 野外布線與資料採集</h3>
+                    <ul class="space-y-2 text-slate-300 text-xs leading-relaxed list-disc list-inside">
+                        <li><strong>測線規劃：</strong>布設全長 48 公尺測線，每隔 2 公尺設置一支地震儀，共 24 通道陣列。</li>
+                        <li><strong>震源敲擊：</strong>肩高揮動大鐵鎚敲擊鐵板產生人工震波，鐵板旁的感測器同步紀錄觸發時間。</li>
+                        <li><strong>訊號疊加 (Stacking)：</strong>重複敲擊並電腦處理疊加訊號，有效消除背景雜訊。</li>
+                    </ul>
+                </div>
+
+                <div class="bg-slate-800/80 p-5 rounded-2xl border border-slate-700 space-y-3">
+                    <h3 class="font-bold text-emerald-400 text-base">🔍 地下地層圖像大揭密</h3>
+                    <ul class="space-y-2 text-slate-300 text-xs leading-relaxed list-disc list-inside">
+                        <li><strong>表土層 (\(V_1\))：</strong>速度約 300 ~ 480 m/s，代表鬆散表土或人工回填土。</li>
+                        <li><strong>深層介面 (\(V_2\))：</strong>速度飆升至 600 ~ 1700+ m/s！\(>1500 	ext{ m/s}\) 強烈暗示觸及飽和含水層（水中聲速約 1500 m/s）或岩盤。</li>
+                        <li><strong>厚度推算：</strong>成功算出表土層厚度約 <strong>2.5 至 4.5 公尺</strong>！</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第七區塊：隨堂測驗 -->
+        <section id="quiz" class="bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 text-white p-6 md:p-8 rounded-3xl shadow-xl space-y-6">
+            <div class="flex justify-between items-center border-b border-indigo-400/30 pb-4">
+                <div>
+                    <span class="px-3 py-1 bg-white/20 text-xs font-bold rounded-full uppercase">Knowledge Check</span>
+                    <h2 class="text-2xl font-extrabold mt-1">🎯 隨堂快問快答驗收</h2>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs text-indigo-200 block">目前得分</span>
+                    <span id="quizScore" class="text-2xl font-black text-amber-300">0 / 3</span>
+                </div>
+            </div>
+
+            <!-- 題目 1 -->
+            <div class="bg-white/10 backdrop-blur p-5 rounded-2xl border border-white/20 space-y-3">
+                <p class="font-bold text-sm text-indigo-100">Q1. 折射震測法能夠發揮作用的核心條件是以下何者？</p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-slate-900 text-xs font-bold">
+                    <button onclick="answerQuiz(1, false, this)" class="bg-white hover:bg-indigo-50 p-3 rounded-xl transition text-left">A. 下層地層波速小於上層 (\(V_2 < V_1\))</button>
+                    <button onclick="answerQuiz(1, true, this)" class="bg-white hover:bg-indigo-50 p-3 rounded-xl transition text-left">B. 下層地層波速大於上層 (\(V_2 > V_1\))</button>
+                    <button onclick="answerQuiz(1, false, this)" class="bg-white hover:bg-indigo-50 p-3 rounded-xl transition text-left">C. 上下層波速完全相同 (\(V_1 = V_2\))</button>
+                </div>
+                <div id="q1Feedback" class="hidden text-xs font-semibold p-3 rounded-lg"></div>
+            </div>
+
+            <!-- 題目 2 -->
+            <div class="bg-white/10 backdrop-blur p-5 rounded-2xl border border-white/20 space-y-3">
+                <p class="font-bold text-sm text-indigo-100">Q2. 在走時曲線圖中，直達波的走時線「斜率」代表什麼意義？</p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-slate-900 text-xs font-bold">
+                    <button onclick="answerQuiz(2, false, this)" class="bg-white hover:bg-indigo-50 p-3 rounded-xl transition text-left">A. 表層波速 \(V_1\) 本身</button>
+                    <button onclick="answerQuiz(2, true, this)" class="bg-white hover:bg-indigo-50 p-3 rounded-xl transition text-left">B. 表層波速的倒數 \(1/V_1\)</button>
+                    <button onclick="answerQuiz(2, false, this)" class="bg-white hover:bg-indigo-50 p-3 rounded-xl transition text-left">C. 地層的總厚度 \(h\)</button>
+                </div>
+                <div id="q2Feedback" class="hidden text-xs font-semibold p-3 rounded-lg"></div>
+            </div>
+
+            <!-- 題目 3 -->
+            <div class="bg-white/10 backdrop-blur p-5 rounded-2xl border border-white/20 space-y-3">
+                <p class="font-bold text-sm text-indigo-100">Q3. 什麼是「超越距離 (\(X_c\))」？</p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-slate-900 text-xs font-bold">
+                    <button onclick="answerQuiz(3, false, this)" class="bg-white hover:bg-indigo-50 p-3 rounded-xl transition text-left">A. 震波完全消逝的最遠距離</button>
+                    <button onclick="answerQuiz(3, false, this)" class="bg-white hover:bg-indigo-50 p-3 rounded-xl transition text-left">B. 地震儀能接收到訊號的最短距離</button>
+                    <button onclick="answerQuiz(3, true, this)" class="bg-white hover:bg-indigo-50 p-3 rounded-xl transition text-left">C. 折射波到達時間「超越」直達波的交會距離</button>
+                </div>
+                <div id="q3Feedback" class="hidden text-xs font-semibold p-3 rounded-lg"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="bg-white border-t border-slate-200 py-8 text-center text-xs text-slate-500 space-y-2">
+        <p class="font-bold text-slate-700">⚡ FlashGeo 地底透視速成網頁 | 國立臺灣科學教育館《科學研習》第65卷第3期</p>
+        <p>參考文獻：陳達毅 (2026). 淺層地底構造探勘: 用「光的折射」原理透視地下世界.</p>
+    </footer>
+
+    <!-- JavaScript 互動與模擬腳本 -->
+    <script>
+        // --- 互動模擬器 Logic ---
+        let currentScore = 0;
+        let answeredQ = {};
+
+        const v1Slider = document.getElementById('v1Slider');
+        const v2Slider = document.getElementById('v2Slider');
+        const hSlider = document.getElementById('hSlider');
+
+        const v1Val = document.getElementById('v1Val');
+        const v2Val = document.getElementById('v2Val');
+        const hVal = document.getElementById('hVal');
+
+        const simXc = document.getElementById('simXc');
+        const simCriticalAngle = document.getElementById('simCriticalAngle');
+
+        const travelCanvas = document.getElementById('travelTimeCanvas');
+        const waveCanvas = document.getElementById('waveCanvas');
+        const ctxTT = travelCanvas.getContext('2d');
+        const ctxWave = waveCanvas.getContext('2d');
+
+        function updateSim() {
+            let v1 = parseFloat(v1Slider.value);
+            let v2 = parseFloat(v2Slider.value);
+            let h = parseFloat(hSlider.value);
+
+            if (v2 <= v1) {
+                v2 = v1 + 100;
+                v2Slider.value = v2;
+            }
+
+            v1Val.innerText = `${v1} m/s`;
+            v2Val.innerText = `${v2} m/s`;
+            hVal.innerText = `${h} m`;
+
+            // 計算臨界角
+            let sinThetaC = v1 / v2;
+            let thetaCDeg = (Math.asin(sinThetaC) * 180 / Math.PI).toFixed(1);
+            simCriticalAngle.innerText = `臨界角 θc = ${thetaCDeg}°`;
+
+            // 計算超越距離 Xc
+            // Formula: h = (Xc * sqrt(V2-V1)) / (2 * sqrt(V2+V1)) => Xc = (2 * h * sqrt(V2+V1)) / sqrt(V2-V1)
+            let xc = (2 * h * Math.sqrt(v2 + v1)) / Math.sqrt(v2 - v1);
+            simXc.innerText = `Xc = ${xc.toFixed(1)} m`;
+
+            drawTravelTimeChart(v1, v2, h, xc);
+            drawGeologicalProfile(v1, v2, h, thetaCDeg, xc);
+        }
+
+        function drawTravelTimeChart(v1, v2, h, xc) {
+            ctxTT.clearRect(0, 0, travelCanvas.width, travelCanvas.height);
+
+            const padding = 40;
+            const w = travelCanvas.width - padding * 2;
+            const hCanvas = travelCanvas.height - padding * 2;
+
+            // 繪製座標軸
+            ctxTT.strokeStyle = '#64748b';
+            ctxTT.lineWidth = 1.5;
+            ctxTT.beginPath();
+            ctxTT.moveTo(padding, padding);
+            ctxTT.lineTo(padding, travelCanvas.height - padding);
+            ctxTT.lineTo(travelCanvas.width - padding, travelCanvas.height - padding);
+            ctxTT.stroke();
+
+            // Label
+            ctxTT.fillStyle = '#94a3b8';
+            ctxTT.font = '10px monospace';
+            ctxTT.fillText('距離 x (m)', travelCanvas.width - padding - 20, travelCanvas.height - 15);
+            ctxTT.fillText('時間 T (s)', 10, padding - 10);
+
+            // 最大範圍
+            const maxDistance = 50; // 50 meters
+            const maxTime = 0.12;   // 0.12 seconds
+
+            // 直達波線 T1 = x / V1
+            ctxTT.strokeStyle = '#f43f5e';
+            ctxTT.lineWidth = 2.5;
+            ctxTT.beginPath();
+            let x0 = padding;
+            let y0 = travelCanvas.height - padding;
+            ctxTT.moveTo(x0, y0);
+
+            let tEnd1 = maxDistance / v1;
+            let xEndPixel1 = padding + (maxDistance / maxDistance) * w;
+            let yEndPixel1 = (travelCanvas.height - padding) - (tEnd1 / maxTime) * hCanvas;
+            ctxTT.lineTo(xEndPixel1, yEndPixel1);
+            ctxTT.stroke();
+
+            // 臨界折射波線 T2 = x / V2 + Intercept
+            let sinC = v1 / v2;
+            let cosC = Math.cos(Math.asin(sinC));
+            let interceptT = (2 * h * cosC) / v1;
+
+            let xCrit = 2 * h * Math.tan(Math.asin(sinC)); // 臨界距離
+
+            ctxTT.strokeStyle = '#10b981';
+            ctxTT.lineWidth = 2.5;
+            ctxTT.beginPath();
+
+            let xCritPixel = padding + (xCrit / maxDistance) * w;
+            let tCrit = xCrit / v2 + interceptT;
+            let yCritPixel = (travelCanvas.height - padding) - (tCrit / maxTime) * hCanvas;
+
+            let tEnd2 = maxDistance / v2 + interceptT;
+            let yEndPixel2 = (travelCanvas.height - padding) - (tEnd2 / maxTime) * hCanvas;
+
+            ctxTT.moveTo(xCritPixel, yCritPixel);
+            ctxTT.lineTo(xEndPixel1, yEndPixel2);
+            ctxTT.stroke();
+
+            // 超越距離點 (Xc)
+            let xcPixel = padding + (xc / maxDistance) * w;
+            let tXc = xc / v1;
+            let yXcPixel = (travelCanvas.height - padding) - (tXc / maxTime) * hCanvas;
+
+            ctxTT.fillStyle = '#fbbf24';
+            ctxTT.beginPath();
+            ctxTT.arc(xcPixel, yXcPixel, 5, 0, Math.PI * 2);
+            ctxTT.fill();
+
+            // 超越距離虛線
+            ctxTT.strokeStyle = '#fbbf24';
+            ctxTT.setLineDash([3, 3]);
+            ctxTT.beginPath();
+            ctxTT.moveTo(xcPixel, yXcPixel);
+            ctxTT.lineTo(xcPixel, travelCanvas.height - padding);
+            ctxTT.stroke();
+            ctxTT.setLineDash([]);
+        }
+
+        function drawGeologicalProfile(v1, v2, h, thetaDeg, xc) {
+            ctxWave.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
+
+            // 地層剖面背景
+            let surfaceY = 40;
+            let layerDepthPixel = surfaceY + (h / 8.0) * 120; // 映射深度
+
+            // 表層 V1
+            ctxWave.fillStyle = '#334155';
+            ctxWave.fillRect(30, surfaceY, waveCanvas.width - 60, layerDepthPixel - surfaceY);
+
+            // 深層 V2
+            ctxWave.fillStyle = '#1e293b';
+            ctxWave.fillRect(30, layerDepthPixel, waveCanvas.width - 60, waveCanvas.height - layerDepthPixel - 20);
+
+            // 介面線
+            ctxWave.strokeStyle = '#fbbf24';
+            ctxWave.lineWidth = 2;
+            ctxWave.beginPath();
+            ctxWave.moveTo(30, layerDepthPixel);
+            ctxWave.lineTo(waveCanvas.width - 30, layerDepthPixel);
+            ctxWave.stroke();
+
+            // 標示震源 (A點)
+            ctxWave.fillStyle = '#f43f5e';
+            ctxWave.beginPath();
+            ctxWave.arc(50, surfaceY, 6, 0, Math.PI * 2);
+            ctxWave.fill();
+            ctxWave.fillStyle = '#ffffff';
+            ctxWave.font = '10px font-bold sans-serif';
+            ctxWave.fillText('震源⭐', 40, surfaceY - 10);
+
+            // 標示地震儀 (D點)
+            let geophoneX = 50 + (xc / 50) * (waveCanvas.width - 100);
+            ctxWave.fillStyle = '#10b981';
+            ctxWave.beginPath();
+            ctxWave.arc(geophoneX, surfaceY, 5, 0, Math.PI * 2);
+            ctxWave.fill();
+            ctxWave.fillText('地震儀▲', geophoneX - 15, surfaceY - 10);
+
+            // 繪製三段式折射波路徑 (A -> B -> C -> D)
+            let radC = (thetaDeg * Math.PI) / 180;
+            let bX = 50 + (layerDepthPixel - surfaceY) * Math.tan(radC);
+            let cX = geophoneX - (layerDepthPixel - surfaceY) * Math.tan(radC);
+
+            if (cX > bX) {
+                ctxWave.strokeStyle = '#38bdf8';
+                ctxWave.lineWidth = 2;
+                ctxWave.beginPath();
+                ctxWave.moveTo(50, surfaceY);
+                ctxWave.lineTo(bX, layerDepthPixel);
+                ctxWave.lineTo(cX, layerDepthPixel);
+                ctxWave.lineTo(geophoneX, surfaceY);
+                ctxWave.stroke();
+            }
+
+            // 地層速度文字
+            ctxWave.fillStyle = '#94a3b8';
+            ctxWave.font = '11px sans-serif';
+            ctxWave.fillText(`V₁ = ${v1} m/s (表土層, 厚度 ${h}m)`, 60, surfaceY + 25);
+            ctxWave.fillText(`V₂ = ${v2} m/s (高速基盤)`, 60, layerDepthPixel + 30);
+        }
+
+        // 動畫展示
+        function runSimulationAnimation() {
+            let step = 0;
+            let timer = setInterval(() => {
+                step += 2;
+                v1Slider.value = 300 + (step % 200);
+                updateSim();
+                if (step > 60) clearInterval(timer);
+            }, 50);
+        }
+
+        // --- 計算機 Logic ---
+        function calculateCalculatedDepth() {
+            let v1 = parseFloat(document.getElementById('calcV1').value);
+            let v2 = parseFloat(document.getElementById('calcV2').value);
+            let xc = parseFloat(document.getElementById('calcXc').value);
+            let res = document.getElementById('calcResult');
+
+            if (isNaN(v1) || isNaN(v2) || isNaN(xc) || v2 <= v1 || v1 <= 0 || xc <= 0) {
+                res.innerText = "請輸入有效參數 (V2 > V1)";
+                res.className = "text-sm font-bold text-rose-500";
+                return;
+            }
+
+            let num = xc * Math.sqrt(v2 - v1);
+            let den = 2 * Math.sqrt(v2 + v1);
+            let h = num / den;
+
+            res.innerText = `${h.toFixed(2)} 公尺`;
+            res.className = "text-3xl font-black text-indigo-900 font-mono";
+        }
+
+        function loadUTaipeiData() {
+            document.getElementById('calcV1').value = 400;
+            document.getElementById('calcV2').value = 1000;
+            document.getElementById('calcXc').value = 18;
+            calculateCalculatedDepth();
+        }
+
+        document.getElementById('calcV1').addEventListener('input', calculateCalculatedDepth);
+        document.getElementById('calcV2').addEventListener('input', calculateCalculatedDepth);
+        document.getElementById('calcXc').addEventListener('input', calculateCalculatedDepth);
+
+        // --- 隨堂測驗 Logic ---
+        function answerQuiz(qNum, isCorrect, btnElement) {
+            if (answeredQ[qNum]) return;
+            answeredQ[qNum] = true;
+
+            let feedback = document.getElementById(`q${qNum}Feedback`);
+            feedback.classList.remove('hidden');
+
+            if (isCorrect) {
+                currentScore += 1;
+                btnElement.classList.add('bg-emerald-500', 'text-white');
+                feedback.className = "text-xs font-bold p-3 rounded-lg bg-emerald-500/20 text-emerald-200 border border-emerald-400/30";
+                feedback.innerText = "🎉 答對了！理解完全正確！";
+            } else {
+                btnElement.classList.add('bg-rose-500', 'text-white');
+                feedback.className = "text-xs font-bold p-3 rounded-lg bg-rose-500/20 text-rose-200 border border-rose-400/30";
+                feedback.innerText = "❌ 答錯囉！請參考上方講義重溫觀念。";
+            }
+
+            document.getElementById('quizScore').innerText = `${currentScore} / 3`;
+        }
+
+        // 初始化
+        v1Slider.addEventListener('input', updateSim);
+        v2Slider.addEventListener('input', updateSim);
+        hSlider.addEventListener('input', updateSim);
+
+        updateSim();
+        calculateCalculatedDepth();
+    </script>
+</body>
+</html>
